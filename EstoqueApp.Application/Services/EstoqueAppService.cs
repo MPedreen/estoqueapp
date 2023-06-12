@@ -1,0 +1,45 @@
+﻿using EstoqueApp.Application.Interfaces.Persistences;
+using EstoqueApp.Application.Interfaces.Services;
+using EstoqueApp.Application.Models.Commands;
+using EstoqueApp.Application.Models.Queries;
+using MediatR;
+
+namespace EstoqueApp.Application.Services
+{
+    public class EstoqueAppService : IEstoqueAppService
+    {
+        private readonly IMediator? _mediator;
+        private readonly IEstoquePersistence? _estoquePersistence;
+
+        public EstoqueAppService(IMediator? mediator, IEstoquePersistence? estoquePersistence)
+        {
+            _mediator = mediator;
+            _estoquePersistence = estoquePersistence;
+        }
+
+        public async Task<EstoqueQuery> Create(EstoqueCreateCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<EstoqueQuery> Update(EstoqueUpdateCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<EstoqueQuery> Delete(EstoqueDeleteCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public List<EstoqueQuery> GetAll()
+        {
+            return _estoquePersistence.GetAll();
+        }
+
+        public EstoqueQuery GetById(Guid? id)
+        {
+            return _estoquePersistence.GetById(id.Value);
+        }
+    }
+}

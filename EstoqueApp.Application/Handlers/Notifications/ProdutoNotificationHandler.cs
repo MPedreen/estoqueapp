@@ -1,0 +1,37 @@
+﻿using EstoqueApp.Application.Interfaces.Persistences;
+using EstoqueApp.Application.Notifications;
+using MediatR;
+
+namespace EstoqueApp.Application.Handlers.Notifications
+{
+    public class ProdutoNotificationHandler
+        : INotificationHandler<ProdutoNotification>
+    {
+        private readonly IProdutoPersistence? _produtoPersistence;
+
+        public ProdutoNotificationHandler(IProdutoPersistence? produtoPersistence)
+        {
+            _produtoPersistence = produtoPersistence;
+        }
+
+        public Task Handle(ProdutoNotification notification, CancellationToken cancellationToken)
+        {
+            switch (notification.Action)
+            {
+                case ActionNotification.Create:
+                    _produtoPersistence.Add(notification.Produto);
+                    break;
+
+                case ActionNotification.Update:
+                    _produtoPersistence.Update(notification.Produto);
+                    break;
+
+                case ActionNotification.Delete:
+                    _produtoPersistence.Delete(notification.Produto);
+                    break;
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+}
